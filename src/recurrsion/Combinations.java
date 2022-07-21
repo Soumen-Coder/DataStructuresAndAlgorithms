@@ -8,7 +8,7 @@ import java.util.List;
 public class Combinations {
 
     public static void main(String[] args) {
-      List<List<Integer>> answer = combine(4,4);
+      List<List<Integer>> answer = combine(4,3);
         System.out.println(answer);
     }
 
