@@ -48,7 +48,7 @@ public class PartitionKEqualSubsets {
        }
 
        if(subsetSum > reqSum){
-           System.out.println("Subset sum is greater tha that required");
+           System.out.println("Subset sum is greater that that required");
            return false;
        }
 
@@ -66,7 +66,7 @@ public class PartitionKEqualSubsets {
                System.out.println();
            }*/
            System.out.println("Subset sum is equal to the required sum, then call the next subset with index 0, from beginning");
-           System.out.println("Calling helper, with index 0, new Subset call: with params : helper("+0+","+Arrays.toString(nums)+","+(k)+","+(subsetNum+1)+","+0+","+reqSum+","+Arrays.toString(alreadyPicked)+")");
+           System.out.println("(((SUBSET NUMBER INCREASES TO :::)))"+(subsetNum+1)+"Calling helper, with index 0, new Subset call: with params : helper("+0+","+Arrays.toString(nums)+","+(k)+","+(subsetNum+1)+","+0+","+reqSum+","+Arrays.toString(alreadyPicked)+")");
            return helper(0,nums, k, subsetNum+1, 0, reqSum, alreadyPicked, new ArrayList<>(), subSets);
        }
 
@@ -78,7 +78,7 @@ public class PartitionKEqualSubsets {
        }
 
        if(alreadyPicked[index] == 1){
-           System.out.println("AlreadyPicked is 1 and printing the numbers taken into considerations :-"+nums[index]);
+           System.out.println("AlreadyPicked[index] is 1 and printing the numbers not taken into considerations :-"+nums[index]);
            System.out.println("Calling helper, with index+1, next element not picked up, same Subset call: with params : helper("+(index+1)+","+Arrays.toString(nums)+","+(k)+","+(subsetNum)+","+subsetSum+","+reqSum+","+Arrays.toString(alreadyPicked)+")");
            return helper(index+1, nums, k, subsetNum, subsetSum, reqSum, alreadyPicked, new ArrayList<>(partition), subSets);
        }
@@ -88,7 +88,7 @@ public class PartitionKEqualSubsets {
            subsetSum+=nums[index];
            System.out.println("Incrementing subset sum :- "+subsetSum);
            alreadyPicked[index] = 1;
-           System.out.println("Setting Already picked at index+"+index+" to 1");
+           System.out.println("Setting Already picked at index "+index+" to 1");
            partition.add(nums[index]);
            System.out.println("Calling helper, with index+1, picked up element, same Subset call: with params : helper("+(index+1)+","+Arrays.toString(nums)+","+(k)+","+(subsetNum)+","+subsetSum+","+reqSum+","+Arrays.toString(alreadyPicked)+")");
            option1 = helper(index, nums, k, subsetNum, subsetSum, reqSum, alreadyPicked, new ArrayList<>(partition), subSets);
@@ -100,10 +100,11 @@ public class PartitionKEqualSubsets {
            alreadyPicked[index] = 0;
            System.out.println("Setting Already picked at index+"+index+" to 0");
            partition.remove(Integer.valueOf(nums[index]));
+           System.out.println("**************Backtracking Ends*********");
 
            //skips the element
-           System.out.println("Skipping the element");
-           System.out.println("Calling helper, with index+1, next element not picked up, same Subset call: with params : helper("+(index+1)+","+Arrays.toString(nums)+","+(k)+","+(subsetNum)+","+subsetSum+","+reqSum+","+Arrays.toString(alreadyPicked)+")");
+           System.out.println("_____Skipping the element_____");
+           System.out.println("*Calling helper, with index+1, next element not picked up, same Subset call: with params : helper("+(index+1)+","+Arrays.toString(nums)+","+(k)+","+(subsetNum)+","+subsetSum+","+reqSum+","+Arrays.toString(alreadyPicked)+"*)");
            option2 = helper(index+1, nums, k, subsetNum, subsetSum, reqSum, alreadyPicked,  new ArrayList<>(partition), subSets);
 
            System.out.println("Returning the helper with either option 1 or option 2, if any is true, returns true");
