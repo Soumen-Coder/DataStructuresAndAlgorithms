@@ -24,8 +24,8 @@ public class NQueens {
     public static List<List<String>> solveNQueens(int n) {
         char[][] chessBoard = new char[n][n];
         int[] col = new int[n];
-        int[] rightDiagonal = new int[2*n];
-        int[] leftDiagonal = new int[2*n];
+        int[] rightDiagonal = new int[2*n]; //Mark diagonals with 2*n elements
+        int[] leftDiagonal = new int[2*n];  //Mark diagonals with 2*n elements
         for (int j = 0; j < n; j++) {
             for (int k = 0; k < chessBoard[0].length; k++) {
                 chessBoard[j][k] = '.';
@@ -34,7 +34,7 @@ public class NQueens {
         return helper(0, n, chessBoard, new ArrayList<>(), col, rightDiagonal, leftDiagonal);
     }
 
-    public static List<List<String>> helper(int i, int n, char[][] chessBoard, List<List<String>> answer, int[]col, int[]rightDiagonal, int[]leftDiagonal){
+    public static List<List<String>> helper(int i, int n, char[][] chessBoard, List<List<String>> answer, int[]col, int[]leftDiagonal, int[]rightDiagonal){
         if(i == n){
             List<String> solution = new ArrayList<>();
             String str = "";
@@ -50,14 +50,14 @@ public class NQueens {
         }
 
         for (int j = 0; j < n ; j++) {
-            //if(isSafe(i, j, chessBoard, n)){
-            if(col[j]==0 && rightDiagonal[(i-j)+(n-1)]==0 && leftDiagonal[i+j]==0){
+            //if(isSafe(i, j, chessBoard, n)){  ==> Less optimized using isSafe
+            if(col[j]==0 && leftDiagonal[(i-j)+(n-1)]==0 && rightDiagonal[i+j]==0){ //More optimized with tracker arrays
                 chessBoard[i][j] = 'Q';
-                col[j]=rightDiagonal[(i-j)+(n-1)]=leftDiagonal[i+j]=1;
-                helper(i+1, n, chessBoard, answer, col, rightDiagonal, leftDiagonal);
+                col[j]=leftDiagonal[(i-j)+(n-1)]=rightDiagonal[i+j]=1;
+                helper(i+1, n, chessBoard, answer, col, rightDiagonal, leftDiagonal); // increment value of i, place queen in next row if safe
                 //Backtracking
                 chessBoard[i][j] = '.';
-                col[j]=rightDiagonal[(i-j)+(n-1)]=leftDiagonal[i+j]=0;
+                col[j]=leftDiagonal[(i-j)+(n-1)]=rightDiagonal[i+j]=0;
             }
         }
         return answer;
@@ -66,6 +66,7 @@ public class NQueens {
     private static boolean isSafe(int i, int j, char[][] chessBoard, int n) {
         int tempI, tempJ;
 
+        //Remember to reset tempI and tempJ in every checking
         //Check in UP direction
         tempI = i;
         while(tempI>=0){
