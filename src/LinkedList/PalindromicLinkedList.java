@@ -37,6 +37,8 @@ public class PalindromicLinkedList {
     }
 
     public static boolean palindromicList(Node head){
+        //head == null -> no elements
+        //head.next == null -> one element
         if(head==null || head.next==null){
             return true;
         }
@@ -71,7 +73,6 @@ public class PalindromicLinkedList {
             prev=curr;
             curr=next;
         }
-        head.next=null;
         head=prev;
         return head;
     }

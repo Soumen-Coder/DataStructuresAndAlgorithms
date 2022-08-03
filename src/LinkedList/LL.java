@@ -11,16 +11,17 @@ public class LL {
     }
 
     public void insertFirst(int value){
-        Node node = new Node(value);
-        if(head!=null) {
-            node.next = head; // because head was null initially so 4 -> NULL makes sense when it is the first to be inserted
+        Node newNode = new Node(value);
+        if(head == null){
+            head = newNode; //head is assigned to the new node
         }
-        head = node;
-
         if(tail == null){
             tail = head;
         }
-
+        if(head!=null) {
+            newNode.next = head; //  newNode now will be pointing to the previous head
+            head = newNode; // make the head point to the new node
+        }
         size+= 1;
     }
 
@@ -29,11 +30,13 @@ public class LL {
             insertFirst(value);
             return;
         }
-        Node node = new Node(value);
-        if(tail!=null) {
-            tail.next = node;
+        Node newNode = new Node(value);
+        Node temp = head;
+        while(temp.next != null){
+            temp = temp.next;
         }
-        tail = node;
+        temp.next = newNode;
+        newNode.next = null;
         size++;
     }
 
@@ -50,8 +53,10 @@ public class LL {
         for (int i = 0; i < index-1; i++) {
              temp=temp.next;
         }
-        Node node = new Node(value, temp.next);
+        Node node = new Node(value);
+        Node next = temp.next;
         temp.next = node;
+        node.next = next;
         size++;
     }
 
