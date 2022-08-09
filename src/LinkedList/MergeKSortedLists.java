@@ -26,12 +26,10 @@ public class MergeKSortedLists {
 
         public void insertFirst(int data){
             ListNode newNode = new ListNode(data);
-            if(head == null){
-                head = newNode;
-            }else if(head!=null){
-               newNode.next = head;
-               head = newNode;
-           }
+            if (head != null) {
+                newNode.next = head;
+            }
+            head = newNode;
             size++;
         }
 
@@ -57,7 +55,6 @@ public class MergeKSortedLists {
                 temp = temp.next;
             }
             System.out.println("END");
-            System.out.println();
         }
     }
     public ListNode mergeKLists(ListNode[] lists) {
@@ -72,10 +69,12 @@ public class MergeKSortedLists {
             }
         }
 
+        System.out.print("Data in PriorityQueue :- ");
         Iterator<ListNode> itr = pQueue.iterator();
         while(itr.hasNext()){
-            System.out.println(itr.next().data);
+            System.out.print(itr.next().data+ "   ");
         }
+        System.out.println();
 
         while(!pQueue.isEmpty()){
             ListNode temp = pQueue.poll();
