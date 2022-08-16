@@ -4,6 +4,8 @@ package LinkedList;
 // Given a singly linked list and a number k, write a function to find the (n/k)-th element,
 // where n is the number of elements in the list.
 // We need to consider ceil value in case of decimals.
+// This example will help in finding the one element prior to the element from where you start reversing when checking for palindromic linkedList.
+// Can use this for palindromic linkedList with K=2;
 
 public class NByKthNodeFromStart {
 
@@ -75,14 +77,10 @@ public class NByKthNodeFromStart {
         ll.insertLast(1);
         ll.insertLast(2);
         ll.insertLast(3);
-        ll.insertLast(4);
-        ll.insertLast(5);
-        ll.insertLast(6);
-        ll.insertLast(7);
-        ll.insertLast(8);
-        ll.insertLast(9);
+        ll.insertLast(2);
+        ll.insertLast(1);
         ll.display();
-        int resultNode = nByKthNode(ll.head, 5);
+        int resultNode = nByKthNode(ll.head, 2);
         System.out.println(resultNode);
     }
 
