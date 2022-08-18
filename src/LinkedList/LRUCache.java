@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-public class LRUCache {
-    public final int capacity;
-    public int size;
-    public final Map<Integer,Node> hashMap;
-    public final DoublyLinkedList internalQueue;
+public class LRUCache<T> {
+    private final int capacity;
+    private int size;
+    private final Map<Integer,Node> hashMap;
+    private final DoublyLinkedList internalQueue;
 
     static BiConsumer<Integer,Node> biConsumer = (key, node) -> System.out.println("The key is :- "+key+" and the corresponding node is :-"+(node.key+","+node.data));
 
@@ -19,12 +19,12 @@ public class LRUCache {
         this.internalQueue = new DoublyLinkedList();
     }
 
-    static class Node{
+    static class Node<T>{
         int key;
-        int data;
+        T data;
         Node prev;
         Node next;
-        Node(int key, int data){
+        Node(final int key, final T data){
             this.key = key;
             this.data = data;
             this.prev=null;
@@ -46,16 +46,20 @@ public class LRUCache {
         }
 
         void moveNodeToFrontOfQueue(Node node){
+            //If it is already in front, then return
             if(front==node){
                 return;
             }
+            //If the node is a rear node
             if(node==rear){
                 rear=rear.prev;
                 rear.next=null;
             }else{
+                //If the node is anywhere in between
                 node.prev.next=node.next;
                 node.next.prev=node.prev;
             }
+            //attaching the node to the front, also this will cover if front==rear, i.e, if there is only one node
             node.prev=null;
             node.next=front;
             front.prev=node;
@@ -67,9 +71,11 @@ public class LRUCache {
         }
 
         void removeNodeFromRearOfQueue(){
-            if(rear==null){
+            //There are no nodes, then no removal, return
+            if(front==null||rear==null){
                 return;
             }
+            //If there is only one node
             if(front==rear){
                 front=rear=null;
             }else {
@@ -79,15 +85,18 @@ public class LRUCache {
         }
 
         void addToFrontOfQueue(Node node){
-            Node temp=front;
-            if(rear==null){
+            Node temp=front; //never modify the front, take a temp
+            //If there are no nodes, make front and rear the node passed
+            if(front==null||rear==null){
                 front=rear=node;
             }
-
+            //If node is already at front, why to disturb it
             if(front==node){
                 return;
             }
 
+            //attaching the node to the front of the list
+            node.prev=null;
             node.next=temp;
             temp.prev=node;
             front=node;
@@ -113,16 +122,16 @@ public class LRUCache {
 
     }
 
-    public int get(int key) {
+    public T get(final int key) {
         Node node = hashMap.get(key);
         if(node==null){
-            return -1;
+            return null;
         }
         internalQueue.moveNodeToFrontOfQueue(node);
         internalQueue.printList(internalQueue.front);
         System.out.println("Printing HashMap from within Get()");
         hashMap.forEach(biConsumer);
-        return node.data;
+        return (T) node.data;
     }
 
     public void put(int key, int value) {
@@ -138,13 +147,13 @@ public class LRUCache {
             internalQueue.removeNodeFromRearOfQueue();
             internalQueue.printList(internalQueue.front);
             hashMap.remove(rearKey);
-            size--;
+            size--; // Remove from the list, have to do size--, don't forget
         }
         Node newNode = new Node(key,value);
         internalQueue.addToFrontOfQueue(newNode);
         internalQueue.printList(internalQueue.front);
         hashMap.put(key, newNode);
-        size++;
+        size++;//Adding an element to the queue, don't forget to do size++
         System.out.println("Printing HashMap from within Put()");
         hashMap.forEach(biConsumer);
         System.out.println("-------Put() Ends---------");
@@ -152,7 +161,7 @@ public class LRUCache {
 
     public static void main(String[] args) {
         System.out.println("LRU Cache created with capacity = 2");
-        LRUCache lRUCache = new LRUCache(2);
+        LRUCache<Integer> lRUCache = new LRUCache<>(2);
         System.out.println("Inserting 1,1 into Cache");
         lRUCache.put(1, 1); // cache is {1=1}
         System.out.println("Inserting 2,2 into Cache");
